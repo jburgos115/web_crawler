@@ -1,22 +1,30 @@
-##Here is website for reference: https://www.topcoder.com/thrive/articles/web-crawler-in-python
-
 import requests
 import lxml
 from bs4 import BeautifulSoup
+import re
 
-##Accessing URl
-url = "https://www.usf.edu/engineering/"  ##Enter URL here
-f = requests.get(url)  ##There is alternative way of requesting access just in case of errors
+# Accessing URl
+url = "https://www.usf.edu/engineering/undergraduate/e-council.aspx"  ##Enter URL here
+page = requests.get(url)  ##There is alternative way of requesting access just in case of errors
 
-##Parse Webpage with Beautiful soup object
-soup = BeautifulSoup(f.content, 'lxml')
+# Parse Webpage with Beautiful soup object
+page_source = str(BeautifulSoup(page.content, 'lxml'))
 
-subpages = []
-for anchor in soup.find_all('a', href=True):
-    string = 'https://www.usf.edu'+str(anchor['href'])
-    subpages.append(string)
+#subpages = []
+#for anchor in soup.find_all('a', href=True):
+#    string = 'https://www.usf.edu'+str(anchor['href'])
+#    subpages.append(string)
 
-print(subpages)
+# compile regex pattern into a regex object
+re_emailLink = re.compile(r"(?<=mailto:)[0-9a-zA-Z.+-_]+@[-0-9a-zA-Z.+_]+\.[a-zA-Z]{2,4}")
+
+# parse page source for regex matches using regex object
+email_matches = re.findall(re_emailLink, page_source)
+
+# print regex matches
+print(email_matches)
+
+#print(soup)
 
 #print(soup)
 
