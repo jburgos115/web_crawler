@@ -45,6 +45,8 @@ re_aspx = re.compile(r"\.aspx$")  # matches .aspx websites
 url_root = "https://www.usf.edu/engineering/about/deans-office.aspx"
 print("Requesting access to: '%s'" % url_root)
 page_fetch = requests.get(url_root)
+
+# check if url is valid
 if not page_fetch.ok:
     print("An error has occurred with the entered link: %d" % page_fetch.status_code)
     exit(1)
@@ -106,7 +108,7 @@ for url in subpages[1:]:
     phone_list = ET.SubElement(subpage, 'phone_list')
     element_list = (email_list, phone_list)
 
-    # append data matrix to xml tree
+    # append data matrix to xml tree using element list
     appendToXML(subpage, data_matrix, element_list)
 
     # print data to console
